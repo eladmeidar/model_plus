@@ -6,6 +6,14 @@ module Rails
         [ :has_one, :has_many, :has_and_belongs_to_many ].include?(self.type)
       end
 
+      def base_type
+        self.type.to_s.split('+')[0]
+      end
+      
+      def type_attributes
+        self.type.to_s.split('+')[1]
+      end
+      
     end
   end
 end

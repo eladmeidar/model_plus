@@ -3,7 +3,7 @@ class <%= migration_name %> < ActiveRecord::Migration
     create_table :<%= table_name %> do |t|
 <% for attribute in attributes -%>
   <% unless attribute.referenced_by? %>
-      t.<%= attribute.type %> :<%= attribute.name %>
+      t.<%= attribute.base_type %> :<%= attribute.name %>
   <% end -%>
 <% end -%>
 <% unless options[:skip_timestamps] %>
