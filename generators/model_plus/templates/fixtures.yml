@@ -1,0 +1,23 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+<% unless attributes.empty? -%>
+one:
+<% for attribute in attributes -%>
+  <% unless attribute.referenced_by? %>
+    <%= attribute.name %>: <%= attribute.default %>
+  <% end -%>
+<% end -%>
+
+two:
+<% for attribute in attributes -%>
+  <% unless attribute.referenced_by? %>
+    <%= attribute.name %>: <%= attribute.default %>
+  <% end -%>
+<% end -%>
+<% else -%>
+# one:
+#   column: value
+#
+# two:
+#   column: value
+<% end -%>
