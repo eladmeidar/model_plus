@@ -12,22 +12,18 @@ writing a proof-of-concept plugin instead.
 
 Here's the current usage instructions:
 
-
-Description:
------------
-
 Stubs out a new model. Pass the model name, either CamelCased or
-under_scored, and an optional list of attribute pairs as arguments.
+underscored, and an optional list of attribute pairs as arguments.
 
-Attribute pairs are column_name:sql_type arguments specifying the
+Attribute pairs are column\_name:sql_type arguments specifying the
 model's attributes. Timestamps are added by default, so you don't have to
 specify them by hand as 'created_at:datetime updated_at:datetime'.
 
 You don't have to think up every attribute up front, but it helps to
 sketch out a few so you can start working with the model immediately.
 
-If you include an attribute with a type of :references, :belongs_to,
-:has_many, :has_one, or :has_and_belongs_to_many, the model will contain
+If you include an attribute with a type of :references, :belongs\_to,
+:has\_many, :has\_one, or :has\_and\_belongs\_to\_many, the model will contain
 the appropriate association declaration.
 
 You can also decorate a type with suffixes that specify further code
