@@ -26,7 +26,7 @@ Description:
     db/migrate.
 
 Examples:
-    `./script/generate model account`
+    `./script/generate model_plus account`
 
         creates an Account model, test, fixture, and migration:
             Model:      app/models/account.rb
@@ -34,6 +34,6 @@ Examples:
             Fixtures:   test/fixtures/accounts.yml
             Migration:  db/migrate/XXX_add_accounts.rb
 
-    `./script/generate model post title:string body:text published:boolean`
+    `./script/generate model_plus post title:string body:text published:boolean`
 
         creates a Post model with a string title, text body, and published flag.
