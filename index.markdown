@@ -13,11 +13,11 @@ writing a proof-of-concept plugin instead.
 Here's the current usage instructions:
 
 Stubs out a new model. Pass the model name, either CamelCased or
-underscored, and an optional list of attribute pairs as arguments.
+under\_scored, and an optional list of attribute pairs as arguments.
 
-Attribute pairs are column\_name:sql_type arguments specifying the
+Attribute pairs are column\_name:sql\_type arguments specifying the
 model's attributes. Timestamps are added by default, so you don't have to
-specify them by hand as 'created_at:datetime updated_at:datetime'.
+specify them by hand as 'created\_at:datetime updated\_at:datetime'.
 
 You don't have to think up every attribute up front, but it helps to
 sketch out a few so you can start working with the model immediately.
