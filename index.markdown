@@ -34,6 +34,10 @@ generation in the model:
     title:string+p     => validates_presence_of :title
     posted:boolean+ap  => attr_accessible and 
        validates_inclusion_of :posted :in => [true, false]
+    rating:float+n     => validates_numericality_of :rating
+    hits:integer+i     => validates_numericality_of :hits, 
+                            :only_integer => true
+    name:string+u      => validates_uniqueness_of :name
 </code></pre>
 
 This generates a model class in app/models, a unit test in test/unit,
