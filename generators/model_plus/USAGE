@@ -13,6 +13,14 @@ Description:
  	:has_many, :has_one, or :has_and_belongs_to_many, the model will contain
  	the appropriate association declaration.
 
+    You can also decorate a type with suffixes that specify further code
+    generation in the model:
+
+    title:string+a     => Adds to an attr_accessible list
+    title:string+p     => validates_presence_of :title
+    posted:boolean+ap  => attr_accessible and 
+                          validates_inclusion_of :posted :in => [true, false]
+
     This generates a model class in app/models, a unit test in test/unit,
     a test fixture in test/fixtures/singular_name.yml, and a migration in
     db/migrate.

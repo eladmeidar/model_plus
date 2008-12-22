@@ -2,8 +2,12 @@ module Rails
   module Generator
     class GeneratedAttribute
       
+      def is_reference?
+        [ :references, :belongs_to ].include?(self.base_type)
+      end
+
       def referenced_by?
-        [ :has_one, :has_many, :has_and_belongs_to_many ].include?(self.type)
+        [ :has_one, :has_many, :has_and_belongs_to_many ].include?(self.base_type)
       end
 
       def base_type
