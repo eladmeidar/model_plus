@@ -37,5 +37,5 @@ generation in the model:
 </code></pre>
 
 This generates a model class in app/models, a unit test in test/unit,
-a test fixture in test/fixtures/singular_name.yml, and a migration in
+a test fixture in test/fixtures/singular/_name.yml, and a migration in
 db/migrate.
