@@ -1,0 +1,12 @@
+---
+layout: post
+title: First Full Release
+---
+
+With the addition of some tests and fixing the bugs, I'm ready to call this a usable release. There are still things to do, but what's
+in there now should be working. On my todo list:
+
+* add a --create-join-table option to use with HABTM
+* gemify
+
+Anything else people would like to see?
