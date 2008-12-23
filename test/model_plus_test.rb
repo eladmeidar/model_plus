@@ -47,4 +47,48 @@ class RailsModelGeneratorTest < GeneratorTestCase
       assert body =~ /^\s+belongs_to :supplier/, "#{body.inspect} should contain 'belongs_to :supplier'"
     end
   end
+  
+  def test_model_with_has_many_attributes_generates_has_many_associations
+    run_generator('model_plus', %w(Supplier name:string products:has_many))
+
+    assert_generated_model_for :supplier do |body|
+      assert body =~ /^\s+has_many :products/, "#{body.inspect} should contain 'has_many :products'"
+    end
+  end
+  
+  def test_model_with_has_one_attributes_generates_has_one_associations
+    run_generator('model_plus', %w(User name:string account:has_one))
+
+    assert_generated_model_for :user do |body|
+      assert body =~ /^\s+has_one :account/, "#{body.inspect} should contain 'has_one :account'"
+    end
+  end
+  
+  def test_model_with_has_and_belongs_to_many_attributes_generates_habtm_associations
+    run_generator('model_plus', %w(Product name:string parts:has_and_belongs_to_many))
+
+    assert_generated_model_for :product do |body|
+      assert body =~ /^\s+has_and_belongs_to_many :parts/, "#{body.inspect} should contain 'has_and_belongs_to_many :parts'"
+    end
+  end
+  
+  def test_has_referencing_attributes_do_not_add_column_to_migration
+    run_generator('model_plus', %w(Supplier name:string products:has_many account:has_one parts:has_and_belongs_to_many))
+
+    assert_generated_migration :create_suppliers do |t|
+      assert_no_generated_column t, :products
+      assert_no_generated_column t, :account
+      assert_no_generated_column t, :parts
+    end
+  end
+  
+  def test_has_referencing_attributes_do_not_add_column_to_fixtures
+    run_generator('model_plus', %w(Supplier name:string products:has_many account:has_one parts:has_and_belongs_to_many))
+
+    assert_generated_fixtures_for :suppliers do |f|
+      assert_no_generated_attribute f, :products
+      assert_no_generated_attribute f, :account
+      assert_no_generated_attribute f, :parts
+    end
+  end
 end
