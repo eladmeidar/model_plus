@@ -3,11 +3,11 @@ module Rails
     class GeneratedAttribute
       
       def is_reference?
-        [ :references, :belongs_to ].include?(self.base_type)
+        [ :references, :belongs_to ].include?(self.base_type.to_sym)
       end
 
       def referenced_by?
-        [ :has_one, :has_many, :has_and_belongs_to_many ].include?(self.base_type)
+        [ :has_one, :has_many, :has_and_belongs_to_many ].include?(self.base_type.to_sym)
       end
 
       def base_type

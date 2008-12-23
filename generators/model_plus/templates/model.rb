@@ -1,9 +1,9 @@
 class <%= class_name %> < ActiveRecord::Base
-<% attributes.select(&:is_reference?).each do |attribute| -%>
-  belongs_to :<%= attribute.name %>
-<% end -%>
+  <% attributes.select(&:is_reference?).each do |attribute| -%>
+    belongs_to :<%= attribute.name.downcase %>
+  <% end -%>
 <% attributes.select(&:referenced_by?).each do |attribute| -%>
-  <%= attribute.base_type %> :<%= attribute.name %>
+  <%= attribute.base_type %> :<%= attribute.name.downcase %>
 <% end -%>
 <% attr_accessible = present = bool_present = numerical = integral = unique = [] %>
 <% attributes.each do |attribute| -%>
@@ -13,7 +13,6 @@ class <%= class_name %> < ActiveRecord::Base
   <% unique << ":" + attribute.name if attribute.type_attributes =~ /u/ -%>
   <% present << ":" + attribute.name if attribute.type_attributes =~ /p/ && attribute.base_type != "boolean" -%>
   <% bool_present << ":" + attribute.name if attribute.type_attributes =~ /p/ && attribute.base_type == "boolean" -%>
-%>
 <% end -%>
 <% if !attr_accessible.empty? -%>
   attr_accessible <%= attr_accessible.join(", ") %>
