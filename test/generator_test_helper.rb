@@ -301,4 +301,9 @@ class GeneratorTestCase < Test::Unit::TestCase
   def assert_generated_column(body, name, type)
     assert_match /t\.#{type.to_s} :#{name.to_s}/, body, "should have column #{name.to_s} defined"
   end
+  
+  # Asserts that the given column's index has been defined in the migration
+  def assert_generated_index(body, table_name, column_name)
+    assert_match /add_index \:#{table_name.to_s}, :#{column_name.to_s}_id/, body, "should have index on column #{column_name} defined"
+  end
 end

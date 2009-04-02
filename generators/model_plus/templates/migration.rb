@@ -1,3 +1,7 @@
+<%
+ indexed_foreign_keys = attributes.select {|attr| attr.is_reference? }
+%>
+
 class <%= migration_name %> < ActiveRecord::Migration
   def self.up
     create_table :<%= table_name %> do |t|
@@ -10,6 +14,10 @@ class <%= migration_name %> < ActiveRecord::Migration
       t.timestamps
 <% end -%>
     end
+    
+    <% for attribute in indexed_foreign_keys %>
+      add_index :<%= table_name %>, :<%= attribute.name + "_id" %>
+    <% end %>
   end
 
   def self.down

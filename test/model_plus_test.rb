@@ -48,6 +48,13 @@ class RailsModelGeneratorTest < GeneratorTestCase
     end
   end
   
+  def test_model_with_belongs_to_attributes_generates_add_index_statement
+    run_generator('model_plus', %w(Product name:string supplier:belongs_to))
+    
+    assert_generated_migration :create_products do |t|
+      assert_generated_index t, :products, :supplier
+    end
+  end
   def test_model_with_has_many_attributes_generates_has_many_associations
     run_generator('model_plus', %w(Supplier name:string products:has_many))
 
