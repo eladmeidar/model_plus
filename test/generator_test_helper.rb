@@ -96,6 +96,7 @@ class GeneratorTestCase < Test::Unit::TestCase
   # Runs the +create+ command (like the command line does).
   def run_generator(name, params)
     silence_generator do
+    #  puts "gen params: #{params.inspect}"
       build_generator(name, params).command(:create).invoke!
     end
   end

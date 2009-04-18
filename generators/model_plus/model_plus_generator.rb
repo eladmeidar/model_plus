@@ -11,13 +11,58 @@ module Rails
       end
 
       def base_type
+        #puts self.type.to_s.split('+')[0]
         self.type.to_s.split('+')[0]
+        #extract_options[:base_type]
       end
       
       def type_attributes
-        self.type.to_s.split('+')[1]
+        @option_attributes = Hash.new("")
+        options =  self.type.to_s.split('+')
+        options.shift
+        options.each do |option|
+          case option.downcase.slice(0..1)
+          when 'vl'
+            # check if there is a length specified
+            length = option.slice(2..option.size)
+            @option_attributes['vl'] = length
+          when 'vu'
+            caps_flag = option.last
+            if caps_flag == "c"
+              @option_attributes['vu'] = ", :case_sensitive => false"
+            else
+              @option_attributes['vu'] = ""
+            end
+          when 'cd'
+            default = option.slice(2..option.size)
+            @option_attributes['cd'] = ", :default => #{default}"
+          when 'cn'
+            @option_attributes['cn'] = ", :null => false"
+          else
+            @option_attributes[option] = nil
+          end
+        end
+      #  puts @option_attributes.inspect
+        @option_attributes
       end
       
+      def option(option_name)
+        
+      end
+      
+      def extract_options
+        type_information = self.type_attributes
+        
+        extended_parameters = /([(]+[a-zA-z: ,]+[)]+)/.match(type_information)[0] rescue nil
+        
+        #unless extended_parameters.blank?
+        #  extended_parameters.split(',').each do |option_type|
+        #    option_type.strip!
+        #    name, value = option_type.split(":")
+        #    options[name.to_sym] = value
+        #  end
+        #end
+      end
     end
   end
 end

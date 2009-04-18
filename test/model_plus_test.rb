@@ -55,6 +55,7 @@ class RailsModelGeneratorTest < GeneratorTestCase
       assert_generated_index t, :products, :supplier
     end
   end
+  
   def test_model_with_has_many_attributes_generates_has_many_associations
     run_generator('model_plus', %w(Supplier name:string products:has_many))
 
@@ -76,6 +77,122 @@ class RailsModelGeneratorTest < GeneratorTestCase
 
     assert_generated_model_for :product do |body|
       assert body =~ /^\s+has_and_belongs_to_many :parts/, "#{body.inspect} should contain 'has_and_belongs_to_many :parts'"
+    end
+  end
+  
+
+  def test_model_extended_options_attr_accessor
+    run_generator('model_plus', %w(Product name:string+aa))
+    assert_generated_model_for :product do |body|
+      assert body =~ /^\s+attr_accessible :name/, "#{body.inspect} should contain 'attr_accessible :name'"
+    end
+  end
+  
+  def test_model_extended_options_attr_protected
+    run_generator('model_plus', %w(Product name:string+ap))
+    assert_generated_model_for :product do |body|
+      assert body =~ /^\s+attr_protected :name/, "#{body.inspect} should contain 'attr_protected :name'"
+    end
+  end
+  
+  def test_model_extended_options_validates_presence_of
+    run_generator('model_plus', %w(Product name:string+vp))
+    assert_generated_model_for :product do |body|
+      assert body =~ /^\s+validates_presence_of :name/, "#{body.inspect} should contain 'validates_presence_of :name'"
+    end
+  end
+  
+  def test_model_extended_options_validates_length_of
+    run_generator('model_plus', %w(Product name:string+vl))
+    assert_generated_model_for :product do |body|
+      assert body =~ /^\s+validates_length_of :name/, "#{body.inspect} should contain 'validates_length_of :name'"
+    end
+  end
+  
+  def test_model_extended_options_validates_length_of_with_length
+    run_generator('model_plus', %w(Product name:string+vl5))
+    assert_generated_model_for :product do |body|
+      assert body =~ /^\s+validates_length_of :name, :minimum => 5/, "#{body.inspect} should contain 'validates_length_of :name, :minimum => 5'"
+    end
+  end
+  
+  def test_model_extended_options_validates_numericality_of
+    run_generator('model_plus', %w(Product age:integer+vn))
+    assert_generated_model_for :product do |body|
+      assert body =~ /^\s+validates_numericality_of :age/, "#{body.inspect} should contain 'validates_numericality_of :age'"
+    end
+  end
+  
+  def test_model_extended_options_validates_numericality_of_integer
+    run_generator('model_plus', %w(Product age:integer+vi))
+    assert_generated_model_for :product do |body|
+      assert body =~ /^\s+validates_numericality_of :age, :only_integer => true/, "#{body.inspect} should contain 'validates_numericality_of :age, :only_integer => true'"
+    end
+  end
+  
+  def test_model_extended_options_validates_uniqueness_of
+    run_generator('model_plus', %w(Product username:string+vu))
+    assert_generated_model_for :product do |body|
+      assert body =~ /^\s+validates_uniqueness_of :username/, "#{body.inspect} should contain 'validates_uniqueness_of :username'"
+    end
+  end
+  
+  def test_model_extended_options_validates_uniqueness_of_no_case_sensitive
+    run_generator('model_plus', %w(Product username:string+vuc))
+    assert_generated_model_for :product do |body|
+      assert body =~ /^\s+validates_uniqueness_of :username, :case_sensitive => false/, "#{body.inspect} should contain 'validates_uniqueness_of :username, :case_sensitive => false'"
+    end
+  end
+  
+  def test_model_extended_options_validates_uniqueness_of_no_case_sensitive
+    run_generator('model_plus', %w(Product email:string+vc))
+    assert_generated_model_for :product do |body|
+      assert body =~ /^\s+validates_confirmation_of :email/, "#{body.inspect} should contain 'validates_confirmation_of :email'"
+      assert body =~ /^\s+validates_presence_of :email_confirmation/, "#{body.inspect} should contain 'validates_presence_of :email_confirmation'"
+    end
+  end
+  
+  def test_migration_with_default
+    run_generator('model_plus', %w(Product name:string+vl3 age:integer+cd5))
+
+    assert_generated_migration :create_products do |t|
+      assert_generated_column t, 'age, :default => 5', :integer
+      assert_generated_column t, 'name', :string
+    end
+  end
+  
+  def test_migration_with_default_empty
+    run_generator('model_plus', %w(Product name:string+vl3 age:integer+cd))
+
+    assert_generated_migration :create_products do |t|
+      assert_generated_column t, 'age', :integer
+      assert_generated_column t, 'name', :string
+    end
+  end
+  
+  def test_migration_with_not_null
+    run_generator('model_plus', %w(Product name:string+vl3 age:integer+cn))
+
+    assert_generated_migration :create_products do |t|
+      assert_generated_column t, 'age, :null => false', :integer
+      assert_generated_column t, 'name', :string
+    end
+  end
+  
+  def test_migration_with_not_null_and_default
+     run_generator('model_plus', %w(Product name:string+vl3 age:integer+cn+cd5))
+
+     assert_generated_migration :create_products do |t|
+       assert_generated_column t, 'age, :default => 5, :null => false', :integer
+       assert_generated_column t, 'name', :string
+     end
+  end
+   
+  def test_migration_with_string_default
+    run_generator('model_plus', %w(Product name:string+cd"elad"))
+
+    assert_generated_migration :create_products do |t|
+      assert_generated_column t, 'name, :default => "elad"', :string
     end
   end
   

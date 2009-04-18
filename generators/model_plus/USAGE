@@ -16,14 +16,29 @@ Description:
     You can also decorate a type with suffixes that specify further code
     generation in the model:
 
-    title:string+a     => Adds to an attr_accessible list
-    title:string+p     => validates_presence_of :title
-    posted:boolean+ap  => attr_accessible and 
-                          validates_inclusion_of :posted :in => [true, false]
-    rating:float+n     => validates_numericality_of :rating
-    hits:integer+i     => validates_numericality_of :hits, :only_integer => true
-    name:string+u      => validates_uniqueness_of :name
+	Adding validations using the +v token:
+	title:string+vp     => validates_uniqueness_of :title
+    username:string+vl  => validates_length_of :username
+	username:string+vl5 => validates_length_of :username, :minimum => 5
+	rating:float+vn     => validates_numericality_of :rating
+	hits:integer+vi     => validates_numericality_of :hits, :only_integer => true
+	name:string+vu      => validates_uniqueness_of :name
+	name:string+vuc     => validates_uniqueness_of :name, :case_sensitive => false
+	password:string+vc  => validates_confirmation_of :password and 
+	                       validates_presence_of :password_confirmation
 
+	accessors too:
+	title:string+aa     => attr_accessor :title
+	password:string+ap  => attr_protected :password
+    You can also use several tokens at once:
+	
+	username:string+vl6+vu  => generates validates_length_of :username and validates_uniqueness_of :username
+
+	A side from validations, you can add other options to your attributes:
+
+	hits:integer+vi+cd0  => validates_numericality_of :hits, :only_integer => true and in the migration t.hits, :integer, :default => 0
+	name:string+cn       => t.name :string, :null => false
+	
     This generates a model class in app/models, a unit test in test/unit,
     a test fixture in test/fixtures/singular_name.yml, and a migration in
     db/migrate.
